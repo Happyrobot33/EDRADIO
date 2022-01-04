@@ -1,7 +1,10 @@
 {
     "workingVolume": 50,
     "loweredVolume": 25,
-    "_comment": "Available options are Spotify and Radio",
+    "_comment1": "Available options are Spotify and Radio",
     "mediaSource": "Radio",
-    "specifiedStation": "LaveRadio"
+    "specifiedStation": "LaveRadio",
+    "_comment2": "Available modes are dim and pause",
+    "mode": "volume",
+    "journalFolder": "C:\\Users\\Matthew\\Saved Games\\Frontier Developments\\Elite Dangerous\\"
 }

@@ -49,3 +49,6 @@ def getVolume():
 
 def setVolume(percent):
     player.audio_set_volume(percent)
+
+def killStream():
+    player.stop()

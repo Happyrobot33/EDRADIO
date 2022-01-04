@@ -22,6 +22,7 @@ timeDictionary = {
 
 class EDSR:
     previouslyStoredLastEvent = ""
+    Provider = ""
 
     def __init__(self, journalPath, mode):
         self.journal = JournalRead.journal()
@@ -32,7 +33,7 @@ class EDSR:
     
     def __init__(self, mode):
         self.journal = JournalRead.journal()
-        self.journal.findJournalPath('C:\\Users\\Matthew\\Saved Games\\Frontier Developments\\Elite Dangerous\\')
+        self.journal.findJournalPath(settings.getJournalFolder())
         self.journal.update()
         self.shouldEndTime = datetime.now()
         self.mode = mode
@@ -45,7 +46,7 @@ class EDSR:
         if lastEvent in timeDictionary:
             if lastEvent != self.previouslyStoredLastEvent:
                 if self.mode == "pause":
-                    self.pauseSong()
+                    self.pause()
                 else:
                     self.setVolume(settings.getLoweredVolume())
                 self.shouldEndTime = datetime.now() + timedelta(0,timeDictionary[lastEvent])
@@ -53,13 +54,21 @@ class EDSR:
         
         if (datetime.now() > self.shouldEndTime):
             if self.mode == "pause":
-                self.pauseSong()
+                self.resume()
             else:
                 self.setVolume(settings.getWorkingVolume())
                 
     #This allows the selection of different audio providers, Spotify premium, Radio
     def setAudioProvider(self, PassedProvider):
+        if self.Provider == "Radio":
+            Radio.killStream()
+        elif PassedProvider != "Spotify" and self.Provider == "Spotify":
+            self.pause()
+        
         self.Provider = PassedProvider
+        settings.setMediaSource(self.Provider)
+
+        self.resume()
 
     def setRadioStation(self, station):
         Radio.selectStation(station)
@@ -112,5 +121,7 @@ class EDSR:
     def toggleMode(self):
         if self.mode == "pause":
             self.mode = "volume"
+            settings.setMode("volume")
         else:
             self.mode = "pause"
+            settings.setMode("pause")
