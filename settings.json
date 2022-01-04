@@ -2,9 +2,10 @@
     "workingVolume": 50,
     "loweredVolume": 25,
     "_comment1": "Available options are Spotify and Radio",
-    "mediaSource": "Radio",
-    "specifiedStation": "LaveRadio",
+    "mediaSource": "Spotify",
+    "specifiedStation": "RadioSidewinder",
     "_comment2": "Available modes are dim and pause",
     "mode": "volume",
+    "_comment3": "ENSURE YOU HAVE CHANGED THE USERNAME TO YOUR LOCAL USER",
     "journalFolder": "C:\\Users\\Matthew\\Saved Games\\Frontier Developments\\Elite Dangerous\\"
 }

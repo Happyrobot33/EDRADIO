@@ -20,16 +20,13 @@ timeDictionary = {
   "FighterDestroyed": 3
 }
 
+ReceiveTexttimeDictionary = {
+    "$DockingChatter_Neutral;": 6,
+}
+
 class EDSR:
     previouslyStoredLastEvent = ""
     Provider = ""
-
-    def __init__(self, journalPath, mode):
-        self.journal = JournalRead.journal()
-        self.journal.setJournalPath(journalPath)
-        self.journal.update()
-        self.shouldEndTime = datetime.now()
-        self.mode = mode
     
     def __init__(self, mode):
         self.journal = JournalRead.journal()
@@ -51,6 +48,15 @@ class EDSR:
                     self.setVolume(settings.getLoweredVolume())
                 self.shouldEndTime = datetime.now() + timedelta(0,timeDictionary[lastEvent])
                 self.previouslyStoredLastEvent = lastEvent
+        elif lastEvent == "ReceiveText":
+            if lastEvent != self.previouslyStoredLastEvent:
+                if self.journal.getlastEventJson()["Message"] in ReceiveTexttimeDictionary:
+                    if self.mode == "pause":
+                        self.pause()
+                    else:
+                        self.setVolume(settings.getLoweredVolume())
+                    self.shouldEndTime = datetime.now() + timedelta(0,ReceiveTexttimeDictionary[self.journal.getlastEventJson()["Message"]])
+                    self.previouslyStoredLastEvent = lastEvent
         
         if (datetime.now() > self.shouldEndTime):
             if self.mode == "pause":
@@ -125,3 +131,7 @@ class EDSR:
         else:
             self.mode = "pause"
             settings.setMode("pause")
+    
+    def nextRadioStation(self):
+        if self.Provider == "Radio":
+            Radio.cycleNextStation()

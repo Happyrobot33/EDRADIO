@@ -3,7 +3,7 @@ import time
 
 #built in radio stations
 RADIOSIDEWINDER = 'http://radiosidewinder.out.airtime.pro:8000/radiosidewinder_a'
-LAVERADIO = 'https://kathy.torontocast.com:2610/stream'
+LAVERADIO = 'http://kathy.torontocast.com:2610/stream'
 
 url = 'http://radiosidewinder.out.airtime.pro:8000/radiosidewinder_a'
 stationName = "Radio Sidewinder"
@@ -21,19 +21,25 @@ player.set_media(media)
 def selectStation(station):
     global url
     global stationName
+    global player
+    global media
+
     if station == "RadioSidewinder":
         url = RADIOSIDEWINDER
         stationName = "Radio Sidewinder"
     elif station == "LaveRadio":
         url = LAVERADIO
         stationName = "Lave Radio"
-    
+
+    killStream()
+
     #Define VLC player
     player=instance.media_player_new()
     #Define VLC media
     media=instance.media_new(url)
     #Set player media
     player.set_media(media)
+    play()
 
 def play():
     player.play()
@@ -52,3 +58,9 @@ def setVolume(percent):
 
 def killStream():
     player.stop()
+
+def cycleNextStation():
+    if getRadioStation() == "Radio Sidewinder":
+        selectStation("LaveRadio")
+    elif getRadioStation() == "Lave Radio":
+        selectStation("RadioSidewinder")

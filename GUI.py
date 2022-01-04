@@ -13,17 +13,16 @@ class GUI:
     def __init__(self, master):
         self.master = master
         master.title("EDSR")
-        master.geometry("500x150")
+        master.geometry("500x175")
         master.configure(bg="black")
         #self.EDSR = EDSR_v2.EDSR('C:\\Users\\Matthew\\Saved Games\\Frontier Developments\\Elite Dangerous\\Journal.211226192835.01.log')
         self.EDSR = EDSR_v2.EDSR(settings.getMode())
         self.EDSR.setAudioProvider(settings.getMediaSource())
         self.EDSR.resume()
-        self.EDSR.setRadioStation(settings.getRadioStation())
         self.canvas = Canvas(master)
 
         #Constants
-        SONGINFOX = 60
+        SONGINFOX = 65
         SONGINFOY = 2
         #Color Constants
         EDOrange = "#FBA706"
@@ -66,6 +65,8 @@ class GUI:
         self.switch_provider_spotify_button.place(x= 0, y = 100)
         self.switch_provider_radio_button = Button(master, text="Radio", command=self.switchToRadio, font=("EuroStyle", 15), anchor="center", bg="black", fg=EDOrange, border=0, pady=0, activebackground=EDOrange, activeforeground=EDOrangeHot)
         self.switch_provider_radio_button.place(x= 0, y = 125)
+        self.switch_radio_station_button = Button(master, text="Channel", command=self.EDSR.nextRadioStation, font=("EuroStyle", 15), anchor="center", bg="black", fg=EDOrange, border=0, pady=0, activebackground=EDOrange, activeforeground=EDOrangeHot)
+        self.switch_radio_station_button.place(x= 0, y = 150)
 
         self.canvas.create_line(SONGINFOX-1, 0, SONGINFOX-1, 1000, fill=EDOrange)
         self.canvas.create_line(SONGINFOX-1, SONGINFOY+80, 1000, SONGINFOY+80, fill=EDOrange)
@@ -93,7 +94,7 @@ class GUI:
         self.currentLoweredVolume.set("Set Event Volume : " + str(settings.getLoweredVolume()))
 
         #Needed to que this function again
-        self.master.after(100, self.update)
+        self.master.after(10, self.update)
 
 root = Tk()
 gui = GUI(root)
