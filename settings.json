@@ -1,0 +1,7 @@
+{
+    "workingVolume": 50,
+    "loweredVolume": 25,
+    "_comment": "Available options are Spotify and Radio",
+    "mediaSource": "Radio",
+    "specifiedStation": "LaveRadio"
+}
