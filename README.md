@@ -1,2 +1,2 @@
 # EDRADIO
- 
+Successor to EDSR
