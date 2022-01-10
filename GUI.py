@@ -12,7 +12,7 @@ pyglet.font.add_directory('Fonts')
 class GUI:
     def __init__(self, master):
         self.master = master
-        master.title("EDSR")
+        master.title("ED RADIO")
         master.geometry("500x175")
         master.configure(bg="black")
         #self.EDSR = EDSR_v2.EDSR('C:\\Users\\Matthew\\Saved Games\\Frontier Developments\\Elite Dangerous\\Journal.211226192835.01.log')
