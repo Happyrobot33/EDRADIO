@@ -55,6 +55,10 @@ def getJournalFolder():
     readSettings()
     return settings["journalFolder"]
 
+def getAvailableRadioStations():
+    readSettings()
+    return settings["Stations"]
+
 def readSettings():
     global settings
     file = open("settings.json")

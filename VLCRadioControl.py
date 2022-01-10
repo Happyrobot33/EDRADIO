@@ -1,12 +1,14 @@
 import vlc
 import time
+import SettingsManager as settings
 
 #built in radio stations
-RADIOSIDEWINDER = 'http://radiosidewinder.out.airtime.pro:8000/radiosidewinder_a'
-LAVERADIO = 'http://kathy.torontocast.com:2610/stream'
+radioStations = {}
 
-url = 'http://radiosidewinder.out.airtime.pro:8000/radiosidewinder_a'
-stationName = "Radio Sidewinder"
+currentDictIndex = 0
+
+url = 'INVALID'
+stationName = "SELECT STATION"
 
 #define VLC instance
 instance = vlc.Instance('--input-repeat=-1', '--fullscreen')
@@ -23,13 +25,10 @@ def selectStation(station):
     global stationName
     global player
     global media
+    global radioStations
 
-    if station == "RadioSidewinder":
-        url = RADIOSIDEWINDER
-        stationName = "Radio Sidewinder"
-    elif station == "LaveRadio":
-        url = LAVERADIO
-        stationName = "Lave Radio"
+    url = radioStations[station]
+    stationName = station
 
     killStream()
 
@@ -59,8 +58,21 @@ def setVolume(percent):
 def killStream():
     player.stop()
 
+def readStations():
+    global radioStations
+
+    radioStations = settings.getAvailableRadioStations()
+
 def cycleNextStation():
-    if getRadioStation() == "Radio Sidewinder":
-        selectStation("LaveRadio")
-    elif getRadioStation() == "Lave Radio":
-        selectStation("RadioSidewinder")
+    global currentDictIndex
+    global radioStations
+    
+    currentDictIndex += 1
+
+    if currentDictIndex == len(radioStations):
+         currentDictIndex = 0
+    
+    keyName = list(radioStations)
+
+    #Find the key name associated with the index
+    selectStation(keyName[currentDictIndex])

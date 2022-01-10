@@ -1,11 +1,17 @@
 {
-    "workingVolume": 50,
+    "workingVolume": 75,
     "loweredVolume": 25,
     "_comment1": "Available options are Spotify and Radio",
-    "mediaSource": "Spotify",
+    "mediaSource": "Radio",
     "specifiedStation": "RadioSidewinder",
     "_comment2": "Available modes are dim and pause",
     "mode": "volume",
     "_comment3": "ENSURE YOU HAVE CHANGED THE USERNAME TO YOUR LOCAL USER",
-    "journalFolder": "C:\\Users\\Matthew\\Saved Games\\Frontier Developments\\Elite Dangerous\\"
+    "journalFolder": "C:\\Users\\Matthew\\Saved Games\\Frontier Developments\\Elite Dangerous\\",
+    "Stations": {
+        "Radio Sidewinder": "http://radiosidewinder.out.airtime.pro:8000/radiosidewinder_a",
+        "Lave Radio": "https://kathy.torontocast.com/lave",
+        "Hutton Orbital": "https://hazel.torontocast.com/hutton",
+        "KGB - F.O.A.M.": "https://node-08.zeno.fm/w1ty2zy651zuv?rj-ttl=5&rj-tok=AAABfkWoZ8IAcB2s3JPXQpj2uQ"
+    }
 }

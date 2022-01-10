@@ -34,6 +34,7 @@ class EDSR:
         self.journal.update()
         self.shouldEndTime = datetime.now()
         self.mode = mode
+        Radio.readStations()
 
     def runUpdate(self):
         self.journal.update()
