@@ -6,15 +6,23 @@ from spotipy.util import CLIENT_CREDS_ENV_VARS
 import json
 
 scope = "streaming app-remote-control user-read-playback-state user-read-currently-playing"
-sp = spotipy.Spotify(auth_manager=SpotifyPKCE(scope=scope, client_id='3bdd08cd9fbf4e1b8437467c357494e8', redirect_uri='http://localhost:8080', open_browser=True))
+sp = spotipy.Spotify(
+    auth_manager=SpotifyPKCE(
+        scope=scope,
+        client_id="3bdd08cd9fbf4e1b8437467c357494e8",
+        redirect_uri="http://localhost:8080",
+        open_browser=True,
+    )
+)
 
-#Control Functions
+# Control Functions
 def pause():
     global sp
     try:
         sp.pause_playback()
     except:
         pass
+
 
 def play():
     global sp
@@ -23,12 +31,14 @@ def play():
     except:
         pass
 
+
 def setVolume(percent):
     global sp
     try:
         sp.volume(percent)
     except:
         pass
+
 
 def getVolume():
     global sp
@@ -37,13 +47,15 @@ def getVolume():
     except:
         return 0
 
-#User Functions
+
+# User Functions
 def getCurrentTrackName():
     global sp
     try:
         return sp.current_user_playing_track()["item"]["name"]
     except:
         return "NULL"
+
 
 def getCurrentTrackID():
     global sp
@@ -52,12 +64,14 @@ def getCurrentTrackID():
     except:
         return "NULL"
 
+
 def getCurrentTrackArtist():
     global sp
     try:
-        return sp.track(getCurrentTrackID())["artists"][0]['name']
+        return sp.track(getCurrentTrackID())["artists"][0]["name"]
     except:
         return "NULL"
+
 
 def toString():
     return "Currently Playing: " + getCurrentTrackName() + " \nArtist: " + getCurrentTrackArtist()

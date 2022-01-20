@@ -2,23 +2,24 @@ import vlc
 import time
 import SettingsManager as settings
 
-#built in radio stations
+# built in radio stations
 radioStations = {}
 
 currentDictIndex = 0
 
-url = 'INVALID'
+url = "INVALID"
 stationName = "SELECT STATION"
 
-#define VLC instance
-instance = vlc.Instance('--input-repeat=-1', '--fullscreen')
+# define VLC instance
+instance = vlc.Instance("--input-repeat=-1", "--fullscreen")
 
-#Define VLC player
-player=instance.media_player_new()
-#Define VLC media
-media=instance.media_new(url)
-#Set player media
+# Define VLC player
+player = instance.media_player_new()
+# Define VLC media
+media = instance.media_new(url)
+# Set player media
 player.set_media(media)
+
 
 def selectStation(station):
     global url
@@ -32,47 +33,55 @@ def selectStation(station):
 
     killStream()
 
-    #Define VLC player
-    player=instance.media_player_new()
-    #Define VLC media
-    media=instance.media_new(url)
-    #Set player media
+    # Define VLC player
+    player = instance.media_player_new()
+    # Define VLC media
+    media = instance.media_new(url)
+    # Set player media
     player.set_media(media)
     play()
+
 
 def play():
     player.play()
 
+
 def pause():
     player.pause()
+
 
 def getRadioStation():
     return stationName
 
+
 def getVolume():
     return player.audio_get_volume()
+
 
 def setVolume(percent):
     player.audio_set_volume(percent)
 
+
 def killStream():
     player.stop()
+
 
 def readStations():
     global radioStations
 
     radioStations = settings.getAvailableRadioStations()
 
+
 def cycleNextStation():
     global currentDictIndex
     global radioStations
-    
+
     currentDictIndex += 1
 
     if currentDictIndex == len(radioStations):
-         currentDictIndex = 0
-    
+        currentDictIndex = 0
+
     keyName = list(radioStations)
 
-    #Find the key name associated with the index
+    # Find the key name associated with the index
     selectStation(keyName[currentDictIndex])

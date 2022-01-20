@@ -1,33 +1,34 @@
-#library imports
+# library imports
 import time
 from datetime import *
 
-#local python imports
+# local python imports
 import JournalRead
 import SpotifyControl as Spotify
 import VLCRadioControl as Radio
 import SettingsManager as settings
 
-#RecieveText currently not implemented as it needs special handling
+# RecieveText currently not implemented as it needs special handling
 timeDictionary = {
-  "StartJump": 6,
-  "DockingGranted": 6,
-  "DockingCancelled": 6,
-  "Docked": 13,
-  "Undocked": 10,
-  "DockingDenied": 13,
-  "JetConeBoost": 3,
-  "FighterDestroyed": 3
+    "StartJump": 6,
+    "DockingGranted": 6,
+    "DockingCancelled": 6,
+    "Docked": 13,
+    "Undocked": 10,
+    "DockingDenied": 13,
+    "JetConeBoost": 3,
+    "FighterDestroyed": 3,
 }
 
 ReceiveTexttimeDictionary = {
     "$DockingChatter_Neutral;": 6,
 }
 
+
 class EDSR:
     previouslyStoredLastEvent = ""
     Provider = ""
-    
+
     def __init__(self, mode):
         self.journal = JournalRead.journal()
         self.journal.findJournalPath(settings.getJournalFolder())
@@ -47,7 +48,7 @@ class EDSR:
                     self.pause()
                 else:
                     self.setVolume(settings.getLoweredVolume())
-                self.shouldEndTime = datetime.now() + timedelta(0,timeDictionary[lastEvent])
+                self.shouldEndTime = datetime.now() + timedelta(0, timeDictionary[lastEvent])
                 self.previouslyStoredLastEvent = lastEvent
         elif lastEvent == "ReceiveText":
             if lastEvent != self.previouslyStoredLastEvent:
@@ -56,22 +57,24 @@ class EDSR:
                         self.pause()
                     else:
                         self.setVolume(settings.getLoweredVolume())
-                    self.shouldEndTime = datetime.now() + timedelta(0,ReceiveTexttimeDictionary[self.journal.getlastEventJson()["Message"]])
+                    self.shouldEndTime = datetime.now() + timedelta(
+                        0, ReceiveTexttimeDictionary[self.journal.getlastEventJson()["Message"]]
+                    )
                     self.previouslyStoredLastEvent = lastEvent
-        
-        if (datetime.now() > self.shouldEndTime):
+
+        if datetime.now() > self.shouldEndTime:
             if self.mode == "pause":
                 self.resume()
             else:
                 self.setVolume(settings.getWorkingVolume())
-                
-    #This allows the selection of different audio providers, Spotify premium, Radio
+
+    # This allows the selection of different audio providers, Spotify premium, Radio
     def setAudioProvider(self, PassedProvider):
         if self.Provider == "Radio":
             Radio.killStream()
         elif PassedProvider != "Spotify" and self.Provider == "Spotify":
             self.pause()
-        
+
         self.Provider = PassedProvider
         settings.setMediaSource(self.Provider)
 
@@ -91,10 +94,10 @@ class EDSR:
             return "Radio Station"
         elif self.Provider == "Spotify":
             return Spotify.getCurrentTrackArtist()
-    
+
     def getLastEvent(self):
         return self.journal.getLastEvent()
-    
+
     def getVolume(self):
         if self.Provider == "Radio":
             Radio.getVolume()
@@ -106,13 +109,13 @@ class EDSR:
             Radio.pause()
         elif self.Provider == "Spotify":
             Spotify.pause()
-    
+
     def resume(self):
         if self.Provider == "Radio":
             Radio.play()
         elif self.Provider == "Spotify":
             Spotify.play()
-    
+
     def setVolume(self, percent):
         if self.Provider == "Radio":
             Radio.setVolume(percent)
@@ -124,7 +127,7 @@ class EDSR:
 
     def getMode(self):
         return self.mode
-    
+
     def toggleMode(self):
         if self.mode == "pause":
             self.mode = "volume"
@@ -132,7 +135,7 @@ class EDSR:
         else:
             self.mode = "pause"
             settings.setMode("pause")
-    
+
     def nextRadioStation(self):
         if self.Provider == "Radio":
             Radio.cycleNextStation()

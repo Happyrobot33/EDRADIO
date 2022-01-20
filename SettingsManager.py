@@ -1,11 +1,14 @@
-#Library imports
+# Library imports
 import json
 
 settings = {}
 
+
 def getWorkingVolume():
     readSettings()
     return settings["workingVolume"]
+
+
 def setWorkingVolume(percent):
     global settings
     readSettings()
@@ -16,25 +19,32 @@ def setWorkingVolume(percent):
 def getLoweredVolume():
     readSettings()
     return settings["loweredVolume"]
+
+
 def setLoweredVolume(percent):
     global settings
     readSettings()
     settings["loweredVolume"] = percent
     saveSettings()
-    
+
 
 def getMediaSource():
     readSettings()
     return settings["mediaSource"]
+
+
 def setMediaSource(mediaSource):
     global settings
     readSettings()
     settings["mediaSource"] = mediaSource
     saveSettings()
 
+
 def getRadioStation():
     readSettings()
     return settings["specifiedStation"]
+
+
 def setRadioStation(station):
     global settings
     readSettings()
@@ -45,25 +55,31 @@ def setRadioStation(station):
 def getMode():
     readSettings()
     return settings["mode"]
+
+
 def setMode(mode):
     global settings
     readSettings()
     settings["mode"] = mode
     saveSettings()
 
+
 def getJournalFolder():
     readSettings()
     return settings["journalFolder"]
 
+
 def getAvailableRadioStations():
     readSettings()
     return settings["Stations"]
+
 
 def readSettings():
     global settings
     file = open("settings.json")
     settings = json.load(file)
     file.close()
+
 
 def saveSettings():
     if settings != "":
