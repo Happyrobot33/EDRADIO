@@ -1,8 +1,6 @@
 from concurrent.futures import thread
 from http.cookiejar import DefaultCookiePolicy
 from logging import exception
-from unicodedata import name
-from black import nullcontext
 import spotipy
 from spotipy.oauth2 import SpotifyPKCE
 from spotipy.util import CLIENT_CREDS_ENV_VARS
@@ -108,8 +106,6 @@ def updateStoredTrackInfo():
 
 # Create a Thread with a function without any arguments
 th = threading.Thread(target=updateStoredTrackInfo)
-th.daemon = True
-th.name = "Spotify Info Requesting"
 
 # User Functions
 def getCurrentTrackName():
