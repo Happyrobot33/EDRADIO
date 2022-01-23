@@ -7,7 +7,7 @@ base = None
 if sys.platform == "win32":
     base = "Win32GUI"  # Tells the build script to hide the console.
 
-target = Executable(script="GUI.py", icon="EDSR.ico", base=base)
+target = Executable(target_name="EDRADIO", script="GUI.py", icon="EDSR.ico", base=base)
 
 setup(
     name="EDRadio",
