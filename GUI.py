@@ -4,7 +4,7 @@ from tkinter.constants import CENTER
 import pyglet
 
 # Local Code Imports
-import EDSR_v2
+import EDSR
 import SettingsManager as settings
 
 pyglet.font.add_directory("Fonts")
@@ -14,10 +14,10 @@ class GUI:
     def __init__(self, master):
         self.master = master
         master.title("ED RADIO")
-        master.geometry("500x175")
+        master.geometry("1000x175")
         master.configure(bg="black")
         # self.EDSR = EDSR_v2.EDSR('C:\\Users\\Matthew\\Saved Games\\Frontier Developments\\Elite Dangerous\\Journal.211226192835.01.log')
-        self.EDSR = EDSR_v2.EDSR(settings.getMode())
+        self.EDSR = EDSR.EDSR(settings.getMode())
         self.EDSR.setAudioProvider(settings.getMediaSource())
         self.EDSR.resume()
         self.canvas = Canvas(master)
@@ -79,7 +79,7 @@ class GUI:
         self.close_button = Button(
             master,
             text="Quit",
-            command=master.quit,
+            command=EDSR.Spotify.killThread,
             font=("EuroStyle", 15),
             anchor="center",
             bg="black",
@@ -175,8 +175,8 @@ class GUI:
         )
         self.switch_radio_station_button.place(x=0, y=150)
 
-        self.canvas.create_line(SONGINFOX - 1, 0, SONGINFOX - 1, 1000, fill=EDOrange)
-        self.canvas.create_line(SONGINFOX - 1, SONGINFOY + 80, 1000, SONGINFOY + 80, fill=EDOrange)
+        self.canvas.create_line(SONGINFOX - 1, 0, SONGINFOX - 1, 100000, fill=EDOrange)
+        self.canvas.create_line(SONGINFOX - 1, SONGINFOY + 80, 100000, SONGINFOY + 80, fill=EDOrange)
         self.canvas.configure(bg=Black, bd=0, highlightthickness=0)
         self.canvas.pack(fill=BOTH, expand=1)
 
@@ -201,7 +201,7 @@ class GUI:
         self.currentLoweredVolume.set("Set Event Volume : " + str(settings.getLoweredVolume()))
 
         # Needed to que this function again
-        self.master.after(10, self.update)
+        self.master.after(100, self.update)
 
 
 root = Tk()

@@ -1,9 +1,14 @@
+from concurrent.futures import thread
 from http.cookiejar import DefaultCookiePolicy
 from logging import exception
+from unicodedata import name
+from black import nullcontext
 import spotipy
 from spotipy.oauth2 import SpotifyPKCE
 from spotipy.util import CLIENT_CREDS_ENV_VARS
 import json
+import threading
+import time
 
 scope = "streaming app-remote-control user-read-playback-state user-read-currently-playing"
 sp = spotipy.Spotify(
@@ -14,6 +19,10 @@ sp = spotipy.Spotify(
         open_browser=True,
     )
 )
+
+trackName = "SPOTIFY NOT ACTIVE/UNREACHABLE"
+trackArtist = "UNFINDABLE"
+runFlag = True
 
 # Control Functions
 def pause():
@@ -48,29 +57,69 @@ def getVolume():
         return 0
 
 
+def getCurrentTrackJson():
+    global sp
+    return sp.current_user_playing_track()
+
+
+# This runs the info update on a seperate thread to prevent the GUI from being jittery, due to the HTML call taking a significant time
+def startThread():
+    global th
+    # Start the thread
+    try:
+        th.start()
+    except:
+        print("Thread already running!")
+
+
+def killThread():
+    print("Attempting to kill spotify thread")
+    global runFlag
+    global th
+    # set exit flag to true
+    runFlag = False
+    th.join()
+    print("Thread joined!")
+    exit()
+
+
+def updateStoredTrackInfo():
+    global runFlag
+    while runFlag:
+        time.sleep(1)
+        global trackName
+        global trackArtist
+        localTrackName = ""
+        localTrackArtist = ""
+        json = getCurrentTrackJson()
+        try:
+            localTrackName = json["item"]["name"]
+            localTrackArtist = json["item"]["artists"][0]["name"]
+        except:
+            localTrackName = "SPOTIFY NOT ACTIVE/UNREACHABLE"
+            localTrackArtist = "UNFINDABLE"
+
+        # These are seperated in order to limit blocking access to these global variables
+        print("Pushing new variables")
+        trackName = localTrackName
+        trackArtist = localTrackArtist
+    print("Thread killed!")
+
+
+# Create a Thread with a function without any arguments
+th = threading.Thread(target=updateStoredTrackInfo)
+th.daemon = True
+th.name = "Spotify Info Requesting"
+
 # User Functions
 def getCurrentTrackName():
-    global sp
-    try:
-        return sp.current_user_playing_track()["item"]["name"]
-    except:
-        return "NULL"
-
-
-def getCurrentTrackID():
-    global sp
-    try:
-        return sp.current_user_playing_track()["item"]["id"]
-    except:
-        return "NULL"
+    global trackName
+    return trackName
 
 
 def getCurrentTrackArtist():
-    global sp
-    try:
-        return sp.track(getCurrentTrackID())["artists"][0]["name"]
-    except:
-        return "NULL"
+    global trackArtist
+    return trackArtist
 
 
 def toString():
