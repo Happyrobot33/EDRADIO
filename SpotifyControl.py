@@ -113,6 +113,7 @@ def updateStoredTrackInfo():
 
 # Create a Thread with a function without any arguments
 th = threading.Thread(target=updateStoredTrackInfo)
+th.daemon = True
 
 # User Functions
 def getCurrentTrackName():
