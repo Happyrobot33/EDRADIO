@@ -8,6 +8,7 @@ from spotipy.util import CLIENT_CREDS_ENV_VARS
 import json
 import threading
 import time
+import sys
 
 scope = "streaming app-remote-control user-read-playback-state user-read-currently-playing"
 sp = spotipy.Spotify(
@@ -79,7 +80,7 @@ def killThread():
     runFlag = False
     th.join()
     print("Thread joined!")
-    exit()
+    sys.exit()
 
 
 def updateStoredTrackInfo():
