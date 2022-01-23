@@ -2,7 +2,7 @@
     "workingVolume": 75,
     "loweredVolume": 25,
     "_comment1": "Available options are Spotify and Radio",
-    "mediaSource": "Radio",
+    "mediaSource": "Spotify",
     "specifiedStation": "RadioSidewinder",
     "_comment2": "Available modes are dim and pause",
     "mode": "volume",

@@ -43,5 +43,5 @@ class journal:
 
         # This ensures that the new journal file will be found if we restarted the game
         if self.getLastEvent() == "Shutdown":
-            print("Searching for new journal file...")
+            # print("Searching for new journal file...")
             self.findJournalPath(self.journalFolderPath)

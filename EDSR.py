@@ -36,6 +36,7 @@ class EDSR:
         self.shouldEndTime = datetime.now()
         self.mode = mode
         Radio.readStations()
+        Spotify.startThread()
 
     def runUpdate(self):
         self.journal.update()
