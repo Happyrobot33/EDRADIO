@@ -1,4 +1,5 @@
 from concurrent.futures import thread
+from genericpath import exists
 from http.cookiejar import DefaultCookiePolicy
 from logging import exception
 import spotipy
@@ -83,14 +84,19 @@ def killThread():
 
 def updateStoredTrackInfo():
     global runFlag
+
+    # Wait for authorization by ensuring .CACHE file exists
+    while not exists(".cache"):
+        time.sleep(1)
+
     while runFlag:
         time.sleep(1)
         global trackName
         global trackArtist
         localTrackName = ""
         localTrackArtist = ""
-        json = getCurrentTrackJson()
         try:
+            json = getCurrentTrackJson()
             localTrackName = json["item"]["name"]
             localTrackArtist = json["item"]["artists"][0]["name"]
         except:
