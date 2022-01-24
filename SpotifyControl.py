@@ -96,9 +96,6 @@ def update():
         except:
             localTrackName = "SPOTIFY NOT ACTIVE/UNREACHABLE"
             localTrackArtist = "UNFINDABLE"
-
-        # These are seperated in order to limit blocking access to these global variables
-        print("Pushing new variables")
     print("Thread killed!")
 
 
