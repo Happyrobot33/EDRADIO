@@ -22,6 +22,8 @@ sp = spotipy.Spotify(
 
 trackName = "SPOTIFY NOT ACTIVE/UNREACHABLE"
 trackArtist = "UNFINDABLE"
+spotifyVolume = 10
+requestedVolume = 10
 runFlag = True
 
 # Control Functions
@@ -42,19 +44,8 @@ def play():
 
 
 def setVolume(percent):
-    global sp
-    try:
-        sp.volume(percent)
-    except:
-        pass
-
-
-def getVolume():
-    global sp
-    try:
-        sp.volume()
-    except:
-        return 0
+    global requestedVolume
+    requestedVolume = percent
 
 
 def getCurrentTrackJson():
@@ -83,7 +74,7 @@ def killThread():
     sys.exit()
 
 
-def updateStoredTrackInfo():
+def update():
     global runFlag
 
     # Wait for authorization by ensuring .CACHE file exists
@@ -94,25 +85,25 @@ def updateStoredTrackInfo():
         time.sleep(1)
         global trackName
         global trackArtist
-        localTrackName = ""
-        localTrackArtist = ""
+        global spotifyVolume
+        global requestedVolume
         try:
             json = getCurrentTrackJson()
-            localTrackName = json["item"]["name"]
-            localTrackArtist = json["item"]["artists"][0]["name"]
+            trackName = json["item"]["name"]
+            trackArtist = json["item"]["artists"][0]["name"]
+            sp.volume(requestedVolume)
+            spotifyVolume = sp.volume()
         except:
             localTrackName = "SPOTIFY NOT ACTIVE/UNREACHABLE"
             localTrackArtist = "UNFINDABLE"
 
         # These are seperated in order to limit blocking access to these global variables
         print("Pushing new variables")
-        trackName = localTrackName
-        trackArtist = localTrackArtist
     print("Thread killed!")
 
 
 # Create a Thread with a function without any arguments
-th = threading.Thread(target=updateStoredTrackInfo)
+th = threading.Thread(target=update)
 th.daemon = True
 
 # User Functions
@@ -124,6 +115,11 @@ def getCurrentTrackName():
 def getCurrentTrackArtist():
     global trackArtist
     return trackArtist
+
+
+def getVolume():
+    global spotifyVolume
+    return spotifyVolume
 
 
 def toString():
